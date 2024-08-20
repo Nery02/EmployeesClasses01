@@ -1,0 +1,309 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Employee Management";
+}
+
+<h1>@ViewData["Title"]</h1>
+<link rel="stylesheet" href="~/css/datatable.css" />
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Employee
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered" id="employee-table">
+                <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Salary</th>
+                <th>Profile Picture</th>
+                <th>Employee Type</th>
+                <th>Created Date</th>
+                <th>Updated Date</th>
+                <th>Is Active?</th>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Name</label>
+                            <input class="form-control" id="name" type="text" placeholder="Name" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="lastname">Lastname</label>
+                            <input class="form-control" id="lastname" type="text" placeholder="Lastname" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input class="form-control" id="email" type="text" placeholder="Email" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="address">Address</label>
+                            <input class="form-control" id="address" type="text" placeholder="Address" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="phone">Phone</label>
+                            <input class="form-control" id="phone" type="text" placeholder="Phone" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="salary">Salary</label>
+                            <input class="form-control" id="salary" type="text" placeholder="Salary" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="employeeType">Employee Type</label>
+                            <select class="form-select" id="employeeType" aria-label="Employee Type">
+                                @foreach (var item in ViewBag.EmployeeTypes)
+                                {
+                                    <option value="@item.Id">@item.Description</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">Form submission successful!</div>
+                                <p>To activate this form, sign up at</p>
+                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                            </div>
+                        </div>
+                        <div class="d-none" id="submitErrorMessage">
+                            <div class="text-center text-danger mb-3">Error sending message!</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="exampleModalLabelEdit" tabindex="-1" aria-labelledby="exampleModalLabelEdit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Name</label>
+                            <input class="form-control" id="name-edit" type="text" placeholder="Name" data-sb-validations="" />
+                            <input class="form-control" id="employeeType-id-edit" type="hidden" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="lastname">Lastname</label>
+                            <input class="form-control" id="lastname-edit" type="text" placeholder="Lastname" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input class="form-control" id="email-edit" type="text" placeholder="Email" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="address">Address</label>
+                            <input class="form-control" id="address-edit" type="text" placeholder="Address" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="phone">Phone</label>
+                            <input class="form-control" id="phone-edit" type="text" placeholder="Phone" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="salary">Salary</label>
+                            <input class="form-control" id="salary-edit" type="text" placeholder="Salary" data-sb-validations="" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="employeeType">Employee Type</label>
+                            <select class="form-select" id="employeeType-edit" aria-label="Employee Type">
+                                @foreach (var item in ViewBag.EmployeeTypes)
+                                {
+                                    <option value="@item.Id">@item.Description</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">Form submission successful!</div>
+                                <p>To activate this form, sign up at</p>
+                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                            </div>
+                        </div>
+                        <div class="d-none" id="submitErrorMessage">
+                            <div class="text-center text-danger mb-3">Error sending message!</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveEdit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        let dataTable;
+        $(document).ready(function () {
+
+            //Inicializacion de DataTables
+            dataTable = $('#employee-table').DataTable({
+                dom: '<"html5buttons" B>lTfgitp',
+                "bDestroy": true,
+                "ajax": {
+                    "url": "@Url.Action("GetEmployees","Employee")",
+                    "type": "GET",
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    { "data": "lastName" },
+                    { "data": "email" },
+                    { "data": "address" },
+                    { "data": "phone" },
+                    { "data": "salary" },
+                    { "data": "profilePic" },
+                    { "data": "employeeType.description" },
+                    {
+                        "data": "createdDate", render: function (data, type, row) {
+                            return (data != "" && data != null) ? moment(data).format('MM/DD/YYYY HH:mm') : "";
+                        }
+                    },
+                    {
+                        "data": "updatedDate", render: function (data, type, row) {
+                            return (data != "" && data != null) ? moment(data).format('MM/DD/YYYY HH:mm') : "";
+                        }
+                    },
+                    {
+                        "data": '', render: function (data, type, row) {
+                            let buttonEdit = '<button class="btn btn-rounded btn-outline-warning btn-edit" data-toggle="tooltip" data-placement="top" title="Editar"><i class="icon icon-editors icon-fw icon-lg">Edit</i></button>';
+                            let buttonDelete = '<button class="btn btn-rounded btn-outline-danger  btn-del" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="icon icon-trash icon-fw icon-lg">Delete</i></button>';
+                            let burronDeleteHard = '<button class="btn btn-rounded btn-outline-secondary  btn-del-2" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="icon icon-trash icon-fw icon-lg">S Delete</i></button>';
+                            return `<div class="btn-group">
+                                    ${buttonEdit}
+                                    ${buttonDelete}
+                                    ${buttonDeleteHard}
+                                    </div>
+                                    `
+
+                        }
+                    }
+                ],
+
+            });
+
+            //Editar un empleado
+            $('#employee-table tbody').on('click', '.btn-edit', function () {
+                let row = dataTable.row($(this).parents('tr')).data();
+                $("#employeeType-id-edit").val(row.id);
+                $("#name-edit").val(row.name);
+                $("#lastname-edit").val(row.lastName);
+                $("#email-edit").val(row.email);
+                $("#address-edit").val(row.address);
+                $("#phone-edit").val(row.phone);
+                $("#salary-edit").val(row.salary);
+                $("#employeeType-edit").val(row.employeeType.id);
+                $('#exampleModalLabelEdit').modal('show');
+            });
+
+            //Eliminar fisicamente un empleado
+            $('#employee-table tbody').on('click', '.btn-del', function () {
+                let row = dataTable.row($(this).parents('tr')).data();
+                let data = {
+                    id: row.id
+                }
+                ajaxRequest(data, "DELETE", "@Url.Action("DeleteEmployee","Employee")")
+                    .done(function (response) {
+                        showAlert(response[0], response[1], response[2]);
+                    }).always(function () {
+                        dataTable.ajax.reload();
+                    });
+            });
+
+            //Eliminar logicamente un empleado
+            $('#employee-table tbody').on('click', '.btn-del-2', function () {
+                let row = dataTable.row($(this).parents('tr')).data();
+                let data = {
+                    id: row.id
+                }
+                ajaxRequest(data, "DELETE", "@Url.Action("SoftDeleteEmployee","Employee")")
+                    .done(function (response) {
+                        showAlert(response[0], response[1], response[2]);
+                    }).always(function () {
+                        dataTable.ajax.reload();
+                    });
+            });
+
+            //Guardar un nuevo empleado
+            $(document).on('click', '#btnSave', function () {
+
+                let employeeData = {
+                    name: $("#name").val(),
+                    lastName: $("#lastname").val(),
+                    email: $("#email").val(),
+                    address: $("#address").val(),
+                    phone: $("#phone").val(),
+                    salary: $("#salary").val(),
+                    employeeTypeId: $("#employeeType").val()
+                };
+
+                ajaxRequest(employeeData, "POST", "@Url.Action("AddEmployee","Employee")")
+                    .done(function (response) {
+                        showAlert(response[0], response[1], response[2]);
+                    }).always(function () {
+                        dataTable.ajax.reload();
+                        $('#exampleModalLabel').modal('hide');
+                    });
+            });
+
+            //Editar un empleado existente
+            $(document).on('click', '#btnSaveEdit', function () {
+
+                let employeeData = {
+                    id: $("#employeeType-id-edit").val(),
+                    name: $("#name-edit").val(),
+                    lastName: $("#lastname-edit").val(),
+                    email: $("#email-edit").val(),
+                    address: $("#address-edit").val(),
+                    phone: $("#phone-edit").val(),
+                    salary: $("#salary-edit").val(),
+                    employeeTypeId: $("#employeeType-edit").val()
+                };
+                ajaxRequest(employeeData, "PUT", "@Url.Action("UpdateEmployee","Employee")")
+                    .done(function (response) {
+                        showAlert(response[0], response[1], response[2]);
+                    }).always(function () {
+                        dataTable.ajax.reload();
+                        $('#exampleModalLabelEdit').modal('hide');
+                    });
+            });
+        });
+    </script>
+
+
+
+}

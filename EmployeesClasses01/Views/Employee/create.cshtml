@@ -1,0 +1,26 @@
+﻿@model EmployeesClasses01.Models.Employee
+
+@{
+    ViewData["Title"] = "Create Employee";
+}
+
+<h1>Create Employee</h1>
+
+<h4>Employee</h4>
+<hr />
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <!-- Agrega los demás campos del formulario aquí -->
+    <div class="form-group">
+        <label asp-for="EmployeeTypeId" class="control-label"></label>
+        <select asp-for="EmployeeTypeId" asp-items="@(new SelectList(ViewBag.EmployeeTypes, "Id", "Description"))" class="form-control"></select>
+        <span asp-validation-for="EmployeeTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>

@@ -1,0 +1,63 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutLR";
+}
+
+<div class="row mt-5">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h5>Register New User</h5>
+            </div>
+            <div class="card-body">
+                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                    <div class="mb-3">
+                        <label class="form-label" for="name">First Name</label>
+                        <input class="form-control" id="firstname" type="text" placeholder="First Name" data-sb-validations="" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="lastname">Last name</label>
+                        <input class="form-control" id="lastname" type="text" placeholder="Last Name" data-sb-validations="" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" id="email" type="text" placeholder="Email" data-sb-validations="" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+                        <input class="form-control" id="password" type="password" placeholder="Password" data-sb-validations="" />
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button id="saveUser" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).on('click', "#saveUser", function () {
+
+            let data = {
+                firstName: $("#firstname").val(),
+                lastName: $("#lastname").val(),
+                email: $("#email").val(),
+                password: $("#password").val()
+            }
+
+            ajaxRequest(data, "POST", "@Url.Action("AddUser","Account")")
+                .done(function (response) {
+                    showAlert(response[0], response[1], response[2])
+                }).fail(function (xhr, status, error) {
+                    showAlert(xhr.responseJSON[0], xhr.responseJSON[1], xhr.responseJSON[2])
+                });
+
+        });
+    </script>
+    }
+
+
